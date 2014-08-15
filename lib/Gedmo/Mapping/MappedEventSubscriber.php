@@ -6,6 +6,7 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\CachedReader;
 use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\Common\EventSubscriber;
+use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\EventArgs;
 
@@ -111,32 +112,52 @@ abstract class MappedEventSubscriber implements EventSubscriber
      */
     public function getConfiguration(ObjectManager $objectManager, $class) {
         $config = array();
-        if (isset(self::$configurations[$this->name][$class])) {
-            $config = self::$configurations[$this->name][$class];
-        } else {
-            $factory = $objectManager->getMetadataFactory();
-            $cacheDriver = $factory->getCacheDriver();
-            if ($cacheDriver) {
-                $cacheId = ExtensionMetadataFactory::getCacheId($class, $this->getNamespace());
-                if (($cached = $cacheDriver->fetch($cacheId)) !== false) {
-                    self::$configurations[$this->name][$class] = $cached;
-                    $config = $cached;
-                } else {
-                    // re-generate metadata on cache miss
-                    $this->loadMetadataForObjectClass($objectManager, $factory->getMetadataFor($class));
-                    if (isset(self::$configurations[$this->name][$class])) {
-                        $config = self::$configurations[$this->name][$class];
-                    }
-                }
 
-                $objectClass = isset($config['useObjectClass']) ? $config['useObjectClass'] : $class;
-                if ($objectClass !== $class) {
-                    $this->getConfiguration($objectManager, $objectClass);
-                }
+        $meta = $objectManager->getClassMetadata($class);
+        $reflection = $meta->getReflectionClass();
 
+        $this->addFieldToConfig($meta, $config, 'Timestampable', 'createdAt', 'string');
+        $this->addFieldToConfig($meta, $config, 'Timestampable', 'updatedAt', 'string');
+        $this->addFieldToConfig($meta, $config, 'Blameable', 'createdBy', 'datetime');
+        $this->addFieldToConfig($meta, $config, 'Blameable', 'updatedBy', 'datetime');
+
+        if ($reflection->implementsInterface('Gedmo\Mapping\MappingConfigurationInterface')) {
+            $classConfig = $reflection->getMethod('getConfiguration')->invoke(new $class());
+
+            if (isset($classConfig[$this->name])) {
+                $config = $classConfig[$this->name];
             }
         }
+
         return $config;
+    }
+
+    /**
+     * Add field to config (if present)
+     *
+     * @param ClassMetadata $meta
+     * @param array $config
+     * @param string $extension
+     * @param string $field
+     * @param string $type
+     */
+    private function addFieldToConfig(ClassMetadata $meta, &$config, $extension, $type)
+    {
+        if (!$meta->hasField($field)) {
+            return;
+        }
+
+        $mapping = $meta->getFieldMapping($field);
+
+        if ($type !== $mapping['type']) {
+            return;
+        }
+
+        if (!isset($config[$extension])) {
+            $config[$extension] = array();
+        }
+
+        $config[$extension][] = $field;
     }
 
     /**

@@ -1,5 +1,17 @@
 # Doctrine2 behavioral extensions
 
+**DO NOT USE THIS**
+
+This is just a bodged fork to try to get around the issues with doctrine not caching metadata with APC.
+
+This only has changes for the 3 extensions that I am currently using (Blameable, Timestampable and Uploadable).
+
+All models with `createdBy` or `updatedBy` with the type `datetime` will be automatically set to `Timestampable`.
+
+All models with `createdAt` or `updatedAt` with the type `string` will be automatically set to `Blameable`.
+
+All other configuration is done in a `getConfiguration` method in each model, see **configuration.md**
+
 **Version 2.3.9**
 
 [![Build Status](https://secure.travis-ci.org/Atlantic18/DoctrineExtensions.png?branch=master)](http://travis-ci.org/Atlantic18/DoctrineExtensions)
