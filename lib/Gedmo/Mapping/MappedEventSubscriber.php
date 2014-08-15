@@ -116,10 +116,10 @@ abstract class MappedEventSubscriber implements EventSubscriber
         $meta = $objectManager->getClassMetadata($class);
         $reflection = $meta->getReflectionClass();
 
-        $this->addFieldToConfig($meta, $config, 'Timestampable', 'createdAt', 'string');
-        $this->addFieldToConfig($meta, $config, 'Timestampable', 'updatedAt', 'string');
-        $this->addFieldToConfig($meta, $config, 'Blameable', 'createdBy', 'datetime');
-        $this->addFieldToConfig($meta, $config, 'Blameable', 'updatedBy', 'datetime');
+        $this->addFieldToConfig($meta, $config, 'Blameable', 'createdBy', 'string');
+        $this->addFieldToConfig($meta, $config, 'Blameable', 'updatedBy', 'string');
+        $this->addFieldToConfig($meta, $config, 'Timestampable', 'createdAt', 'datetime');
+        $this->addFieldToConfig($meta, $config, 'Timestampable', 'updatedAt', 'datetime');
 
         if ($reflection->implementsInterface('Gedmo\Mapping\MappingConfigurationInterface')) {
             $classConfig = $reflection->getMethod('getConfiguration')->invoke(new $class());
@@ -141,15 +141,13 @@ abstract class MappedEventSubscriber implements EventSubscriber
      * @param string $field
      * @param string $type
      */
-    private function addFieldToConfig(ClassMetadata $meta, &$config, $extension, $type)
+    private function addFieldToConfig(ClassMetadata $meta, &$config, $extension, $field, $type)
     {
         if (!$meta->hasField($field)) {
             return;
         }
 
-        $mapping = $meta->getFieldMapping($field);
-
-        if ($type !== $mapping['type']) {
+        if ($meta->getTypeOfField($field) !== $type) {
             return;
         }
 

@@ -50,9 +50,11 @@ For "changes" add to the configuration array in the following format.
 return array(
     'Timestampable' => array(
         'change'    => array(
-            'field' 		=> 'field1',
-            'trackedField' 	=> 'field2',	// where necessary
-            'value' 		=> true,        // where necessary
+            array(
+                'field' 		=> 'field1',
+                'trackedField' 	=> 'field2',	// where necessary
+                'value' 		=> true,        // where necessary
+            ),
         ),
     ),
 );
