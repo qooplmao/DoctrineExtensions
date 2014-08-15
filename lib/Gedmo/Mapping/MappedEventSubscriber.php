@@ -116,11 +116,6 @@ abstract class MappedEventSubscriber implements EventSubscriber
         $meta = $objectManager->getClassMetadata($class);
         $reflection = $meta->getReflectionClass();
 
-        $this->addFieldToConfig($meta, $config, 'Blameable', 'createdBy', 'string');
-        $this->addFieldToConfig($meta, $config, 'Blameable', 'updatedBy', 'string');
-        $this->addFieldToConfig($meta, $config, 'Timestampable', 'createdAt', 'datetime');
-        $this->addFieldToConfig($meta, $config, 'Timestampable', 'updatedAt', 'datetime');
-
         if ($reflection->implementsInterface('Gedmo\Mapping\MappingConfigurationInterface')) {
             $classConfig = $reflection->getMethod('getConfiguration')->invoke(new $class());
 
@@ -128,6 +123,11 @@ abstract class MappedEventSubscriber implements EventSubscriber
                 $config = $classConfig[$this->name];
             }
         }
+
+        $this->addFieldToConfig($meta, $config, 'Blameable', 'create', 'createdBy', 'string');
+        $this->addFieldToConfig($meta, $config, 'Blameable', 'update', 'updatedBy', 'string');
+        $this->addFieldToConfig($meta, $config, 'Timestampable', 'create', 'createdAt', 'datetime');
+        $this->addFieldToConfig($meta, $config, 'Timestampable', 'update', 'updatedAt', 'datetime');
 
         return $config;
     }
@@ -138,24 +138,21 @@ abstract class MappedEventSubscriber implements EventSubscriber
      * @param ClassMetadata $meta
      * @param array $config
      * @param string $extension
+     * @param string $on
      * @param string $field
      * @param string $type
      */
-    private function addFieldToConfig(ClassMetadata $meta, &$config, $extension, $field, $type)
+    private function addFieldToConfig(ClassMetadata $meta, &$config, $extension, $on, $field, $type)
     {
-        if (!$meta->hasField($field)) {
+        if (!$meta->hasField($field) || $meta->getTypeOfField($field) !== $type || $this->name !== $extension) {
             return;
         }
 
-        if ($meta->getTypeOfField($field) !== $type) {
-            return;
+        if (!isset($config[$on])) {
+            $config[$on] = array();
         }
 
-        if (!isset($config[$extension])) {
-            $config[$extension] = array();
-        }
-
-        $config[$extension][] = $field;
+        $config[$on][] = $field;
     }
 
     /**
