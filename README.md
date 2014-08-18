@@ -4,7 +4,8 @@
 
 This is just a bodged fork to try to get around the issues with doctrine not caching metadata with APC.
 
-This only has changes for the 3 extensions that I am currently using (Blameable, Timestampable and Uploadable).
+All this does is read the mapping from a method in the model rather than read it in from the actual mapping, due to the
+fact (at least for me in my latest project) that the extensions mapping is not stored in the Doctrine metadata cache.
 
 All models with `createdBy` or `updatedBy` with the type `datetime` will be automatically set to `Timestampable`.
 

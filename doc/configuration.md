@@ -12,7 +12,148 @@ return array(
 );
 ```
 
-# Create
+# Blameable
+
+## On "create"
+
+For "creates" add to the configuration array in the following format.
+
+``` php
+return array(
+    'Blameable' => array(
+        'create'    => array(
+            'field1',
+            'field2',
+        ),
+    ),
+);
+```
+
+## On "update"
+
+For "updates" add to the configuration array in the following format.
+
+``` php
+return array(
+    'Blameable' => array(
+        'update'    => array(
+            'field1',
+            'field2',
+        ),
+    ),
+);
+```
+
+## On "change"
+
+For "changes" add to the configuration array in the following format.
+
+``` php
+return array(
+    'Blameable' => array(
+        'change'    => array(
+            array(
+                'field' 		=> 'field1',
+                'trackedField' 	=> 'field2',	// where necessary
+                'value' 		=> true,        // where necessary
+            ),
+        ),
+    ),
+);
+```
+
+# IP Traceable
+
+## On "create"
+
+For "creates" add to the configuration array in the following format.
+
+``` php
+return array(
+    'IpTraceable' => array(
+        'create'    => array(
+            'field1',
+            'field2',
+        ),
+    ),
+);
+```
+
+## On "update"
+
+For "updates" add to the configuration array in the following format.
+
+``` php
+return array(
+    'IpTraceable' => array(
+        'update'    => array(
+            'field1',
+            'field2',
+        ),
+    ),
+);
+```
+
+## On "change"
+
+For "changes" add to the configuration array in the following format.
+
+``` php
+return array(
+    'IpTraceable' => array(
+        'change'    => array(
+            array(
+                'field' 		=> 'field1',
+                'trackedField' 	=> 'field2',	// where necessary
+                'value' 		=> true,        // where necessary
+            ),
+        ),
+    ),
+);
+```
+
+# Loggable
+
+For "loggable" add to the configuration in the following format.
+
+``` php
+return array(
+    'Loggable' => array(
+        'loggable'          => true,
+        'logEntryClass'     => FQCN             // where necessary
+        'versioned'         => array(
+            'field1',
+            'field2',
+        ),
+    ),
+);
+```
+
+# Sluggable
+
+TODO
+
+# SoftDeleteable
+
+For "softdeleteable" add to the configuration in the following format.
+
+``` php
+return array(
+    'SoftDeleteable' => array(
+        'softDeleteable'    => true,
+        'fieldName'         => string           // field to handle update, ie. deletedAt
+        'timeAware'         => true/false (default: false)
+    ),
+);
+```
+
+# Sortable
+
+TODO
+
+# Timestampable
+
+## On "create"
 
 For "creates" add to the configuration array in the following format.
 
@@ -27,7 +168,7 @@ return array(
 );
 ```
 
-# Update
+## On "update"
 
 For "updates" add to the configuration array in the following format.
 
@@ -42,7 +183,7 @@ return array(
 );
 ```
 
-# Change
+## On "change"
 
 For "changes" add to the configuration array in the following format.
 
@@ -59,6 +200,10 @@ return array(
     ),
 );
 ```
+
+# Translatable
+
+# Tree
 
 # Uploadable
 
