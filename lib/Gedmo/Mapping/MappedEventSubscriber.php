@@ -111,6 +111,11 @@ abstract class MappedEventSubscriber implements EventSubscriber
      * @return array
      */
     public function getConfiguration(ObjectManager $objectManager, $class) {
+        if (null === $this->name) {
+            $parts = explode('\\', $this->getNamespace());
+            $this->name = end($parts);
+        }
+        
         $config = array();
 
         $meta = $objectManager->getClassMetadata($class);
