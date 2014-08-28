@@ -126,6 +126,10 @@ abstract class MappedEventSubscriber implements EventSubscriber
 
             if (isset($classConfig[$this->name])) {
                 $config = $classConfig[$this->name];
+
+                if (!isset($config['useObjectClass'])) {
+                    $config['useObjectClass'] = $class;
+                }
             }
         }
 
