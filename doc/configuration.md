@@ -149,7 +149,18 @@ return array(
 
 # Sortable
 
-TODO
+For "sortable" add to the configuration in the following format.
+
+``` php
+return array(
+    'Sortable' => array(
+        'position'          => field that you would have gedmo:sortablePosition
+        'groups'            => array(
+            'field1',       // each field that you would have gedmo:sortableGroup
+        ),
+    ),
+);
+```
 
 # Timestampable
 
@@ -203,7 +214,11 @@ return array(
 
 # Translatable
 
+TODO
+
 # Tree
+
+TODO
 
 # Uploadable
 
