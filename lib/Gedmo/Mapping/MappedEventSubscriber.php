@@ -115,7 +115,7 @@ abstract class MappedEventSubscriber implements EventSubscriber
             $parts = explode('\\', $this->getNamespace());
             $this->name = end($parts);
         }
-        
+
         $config = array();
 
         $meta = $objectManager->getClassMetadata($class);
@@ -133,10 +133,10 @@ abstract class MappedEventSubscriber implements EventSubscriber
             }
         }
 
-        $this->addFieldToConfig($meta, $config, 'Blameable', 'create', 'createdBy', 'string');
-        $this->addFieldToConfig($meta, $config, 'Blameable', 'update', 'updatedBy', 'string');
-        $this->addFieldToConfig($meta, $config, 'Timestampable', 'create', 'createdAt', 'datetime');
-        $this->addFieldToConfig($meta, $config, 'Timestampable', 'update', 'updatedAt', 'datetime');
+    //    $this->addFieldToConfig($meta, $config, 'Blameable', 'create', 'createdBy', 'string');
+    //    $this->addFieldToConfig($meta, $config, 'Blameable', 'update', 'updatedBy', 'string');
+    //    $this->addFieldToConfig($meta, $config, 'Timestampable', 'create', 'createdAt', 'datetime');
+    //    $this->addFieldToConfig($meta, $config, 'Timestampable', 'update', 'updatedAt', 'datetime');
 
         return $config;
     }
