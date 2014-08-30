@@ -239,8 +239,8 @@ return array(
         'fileSizeField'     => field that you would have gedmo:uploadableFileSize
         'filenameGenerator' => SHA1/ALPHANUMERIC/NONE/FQCN of custom generator
         'maxSize'           => integer (default: 0)
-        'allowedTypes'      => csv (default: '')
-        'disallowedTypes'   => csv (default: '')
+        'allowedTypes'      => array|false (default false)
+        'disallowedTypes'   => array|false (default false)
     ),
 );
 ```
