@@ -9,5 +9,5 @@ interface MappingConfigurationInterface
      *
      * @return array
      */
-    public function getConfiguration();
+    public function getMappingConfiguration();
 }

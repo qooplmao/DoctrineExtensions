@@ -122,7 +122,7 @@ abstract class MappedEventSubscriber implements EventSubscriber
         $reflection = $meta->getReflectionClass();
 
         if ($reflection->implementsInterface('Gedmo\Mapping\MappingConfigurationInterface')) {
-            $classConfig = $reflection->getMethod('getConfiguration')->invoke(new $class());
+            $classConfig = $reflection->getMethod('getMappingConfiguration')->invoke(new $class());
 
             if (isset($classConfig[$this->name])) {
                 $config = $classConfig[$this->name];
